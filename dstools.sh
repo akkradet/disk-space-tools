@@ -2,6 +2,21 @@
 
 set -u
 
+# Functions
+function RMLOG10MB {
+find /home*/*/ -type f -name "error_log" -size +10000k -exec rm -f {} \;
+}
+
+# View disk usage in /var/log/ & /root/ & /home/swb/
+# Clear old archived logs from /var/log/
+# Empty all cPanel Trash Folders
+# Empty all error_log files greater than 10MB
+# Search for any files larger than 1GB
+# See Installatron Backup folder usage
+# View & Reduced number of Reserved Blocks on disk
+# 
+#
+
 OPTION=$(whiptail --title "Disk Space Tools" --menu "Choose your option" 15 60 8 \
 "1" "Clear old / archived logs from /var/log/" \
 "2" "Empty all cPanel Trash Folders" \
@@ -20,7 +35,7 @@ fi
 case $OPTION in
     1) rm -f /var/log/messages-* /var/log/cron-* /var/log/secure-* /var/log/spooler-* /var/log/maillog-* /var/log/lastlog-* /var/log/exim_paniclog-* /var/log/exim_rejectlog-* /var/log/exim_mainlog-* ;;
     2) COMMAND ;;
-    3) find /home*/*/ -type f -name "error_log" -size +5000k -exec rm -f {} \; ;;
+    3) RMLOG5MB ;;
     4) du -sh /home*/*/application_backups/ ;;
     5) tune2fs -l /dev/sda1 | grep Reserved ;;
     *) exit 0;;
